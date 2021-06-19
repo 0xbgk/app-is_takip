@@ -1,5 +1,10 @@
 const User = require('../models/User');
 
+const hataYakala = (err) => {
+
+    console.log(err.message, err.code)
+}
+
 module.exports.signup_get = (req, res) => {
     res.render('signup');
 }
@@ -13,6 +18,7 @@ module.exports.signup_post = async (req, res) => {
         res.status(201).json(user);
     } catch (error) {
         res.status(400).send('hata olustu kullanici olusmadi');
+        hataYakala(error);
     }
 
     // res.send('yeni kullanici olusturuldu');
