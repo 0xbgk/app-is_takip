@@ -1,7 +1,28 @@
 <%- include('partials/header.ejs') %>
 
-<h1>
-    SIGN UP
-</h1>
+<form action="/signup">
+    <h2>Kullanıcı Oluştur</h2>
+    <label for="email">Email</label>
+    <input type="text" name="email" required/>
+    <div class="email error"></div>
+    <label for="password">Parola</label>
+    <input type="password" name="parola" required/>
+    <div class="parola error"></div>
+    <button type="submit">Oluştur</button>
+</form>
 
 <%- include('partials/footer.ejs') %>
+
+<script>
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const email = form.email.value;
+        const parola = form.parola.value;
+
+        console.log(email, parola);
+    });
+
+</script>
