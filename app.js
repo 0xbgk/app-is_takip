@@ -1,10 +1,11 @@
 const express=require('express');
-
 const mongoose=require('mongoose');
+const authRoutes=require('./routes/authRoutes');
 
 const app=express();
 
 app.use(express.static('public'));
+app.use(express.json());
 
 app.set('view engine', 'ejs');
 
@@ -18,3 +19,5 @@ mongoose.connect(dbURI, {useNewUrlParser:true, useUnifiedTopology:true, useCreat
 
 app.get('/', (req,res)=>res.render('home'));
 app.get('/works', (req,res)=>res.render('works'));
+
+app.use(authRoutes);
