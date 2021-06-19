@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -16,16 +17,19 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.post('save', function (doc, next) {
+userSchema.pre('save', async function (next) {
 
-    console.log('kaydedildikten sonra calisacak', doc);
+    // console.log('kaydedilmeden once calisacak', this);
+    const salt = await bcrypt.genSalt();
+    this.parola = await bcrypt.hash(this.parola, salt);
     next();
 });
 
-userSchema.pre('save', function (next) {
-    console.log('kaydedilmeden once calisacak', this);
-    next();
-})
+// userSchema.post('save', function (doc, next) {
+
+//     console.log('kaydedildikten sonra calisacak', doc);
+//     next();
+// });
 
 const User = mongoose.model('user', userSchema);
 
