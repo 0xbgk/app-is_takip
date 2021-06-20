@@ -37,7 +37,7 @@ app.get('/set-cookies', (req, res) => {
     res.send('Cookie olustu');
 })
 
-// * cookie cagirma method 2
+// * cookie cagirma method 1
 app.get('/get-cookies', (req, res) => {
     const cookies = req.cookies;
     console.log(cookies.parola);
