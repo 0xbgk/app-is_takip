@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const jtw = require('jsonwebtoken');
 
 const hataYakala = (err) => {
 
@@ -18,6 +19,15 @@ const hataYakala = (err) => {
     return errors;
 }
 
+const maxAge = 3 * 24 * 60 * 60 * 1000; // 3 days
+
+const createToken = (id) => {
+
+    return jtw.sign({ id }, 'bgk-software', {
+        expiresIn: maxAge
+    });
+}
+
 module.exports.signup_get = (req, res) => {
     res.render('signup');
 }
@@ -28,6 +38,8 @@ module.exports.signup_post = async (req, res) => {
 
     try {
         const user = await User.create({ email, parola });
+        const token = createToken(user._id);
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge });
         res.status(201).json(user);
     } catch (error) {
         // res.status(400).send('hata olustu kullanici olusmadi');
