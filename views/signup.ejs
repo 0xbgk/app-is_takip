@@ -7,7 +7,7 @@
     <div class="email error"></div>
     <label for="password">Parola</label>
     <input type="password" name="parola" required/>
-    <div class="parola error"></div>
+    <div class="password error"></div>
     <button type="submit">Oluştur</button>
 </form>
 
@@ -15,14 +15,21 @@
 
 <script>
     const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
 
     form.addEventListener('submit', async (e) => {
+        
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
         e.preventDefault();
 
+                      
         const email = form.email.value;
         const parola = form.parola.value;
 
-        console.log(email, parola);
+        // console.log(email, parola);
 
         try {
             const res = await fetch('/signup', {
@@ -30,6 +37,17 @@
                 body:JSON.stringify({email, parola}),
                 headers: {'Content-Type':'application/json'}
             });
+
+            const data = await res.json();
+            if(data.errors){
+                emailError.textContent = data.errors.email;
+                passwordError.textContent = data.errors.parola;
+            }
+
+            if (data._id) {
+                location.assign('/');    
+            }
+
         } catch (error) {
             console.log(error)
         }
