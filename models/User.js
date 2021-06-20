@@ -25,6 +25,18 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
+userSchema.statics.login = async function (email, parola) {
+    const user = await this.findOne({ email });
+    if (user) {
+        const auth = await bcrypt.compare(parola, user.parola);
+        if (auth) {
+            return user;
+        }
+        throw Error('parola-hatası');
+    }
+    throw Error('email-hatası');
+}
+
 // userSchema.post('save', function (doc, next) {
 
 //     console.log('kaydedildikten sonra calisacak', doc);
